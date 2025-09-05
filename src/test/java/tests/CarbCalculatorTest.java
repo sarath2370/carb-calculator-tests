@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CarbCalculatorTest extends BaseTest {
 
     @Test
-    @DisplayName("A1: Happy Path computes recommendation")
+    @DisplayName("A1: Happy Path Male computes recommendation")
     void happyPathTestMaleModerate() {
         CarbCalcPage carbCalcPage = new CarbCalcPage(driver, wait);
         carbCalcPage.load()
@@ -40,9 +40,24 @@ public class CarbCalculatorTest extends BaseTest {
         assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is visible after calculation");
     }
 
+    @Test
+    @DisplayName("A3: Happy path – Imperial Male, Moderate activity")
+    void happyPathImperialMaleModerate(){
+        CarbCalcPage carbCalcPage = new CarbCalcPage(driver, wait);
+        carbCalcPage.load()
+                .imperialUnits()
+                .setAge(30)
+                .selectSex("male")
+                .ImperialHeightFtin(5, 10)
+                .ImperialWeightLbs(154.3)
+                .selectActivityLevel("Moderate: exercise 4-5 times/week")
+                .calculate();
+        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is visible after calculation");
+    }
+
 
     @Test
-    @DisplayName("A4: Blank submit shows error")
+    @DisplayName("A5: Blank submit shows error")
     void blankSubmitShowsError() {
         CarbCalcPage carbCalcPage = new CarbCalcPage(driver, wait);
         carbCalcPage.load()
@@ -50,7 +65,7 @@ public class CarbCalculatorTest extends BaseTest {
                 .calculate();
 
         assertFalse(carbCalcPage.getResult(),"Submitting blank form should surface validation or help messages and not result table" );
-        assertTrue(carbCalcPage.hasErrorMessage(), "Expected error message is visible after blank submission");
+        assertTrue(carbCalcPage.hasBlankErrorMessage(), "Expected error message is visible after blank submission");
     }
 
 

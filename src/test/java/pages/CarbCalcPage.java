@@ -5,11 +5,18 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.List;
+
 public class CarbCalcPage {
 
     private final WebDriver driver;
     private final  WebDriverWait wait;
     private final String url = "https://www.calculator.net/carbohydrate-calculator.html";
+    private static final List<String> EXPECTED_ERRORS = List.of(
+            "Please provide an age between 18 and 80.",
+            "Please provide positive height value.",
+            "Please provide positive weight value."
+    );
 
 
     public CarbCalcPage(WebDriver driver, WebDriverWait wait) {
@@ -113,18 +120,54 @@ public class CarbCalcPage {
         }
     }
 
-    public boolean hasErrorMessage(){
-        By locator = By.xpath(
-                "//*[contains(@class,'inputErrMsg') or contains(.,'Please') or contains(.,'invalid')or contains(.,'required')]"
-        );
+    public boolean hasBlankErrorMessage(){
         try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-            return true;
-        } catch (TimeoutException e) {
+            WebElement container = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@style,'error.svg')]"))
+            );
+
+            return container.isDisplayed();
+        }
+        catch (TimeoutException e) {
             return false;
         }
     }
 
+    public CarbCalcPage imperialUnits(){
+        WebElement imperialLink = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'US Units')]")
+        ));
+        imperialLink.click();
+        return this;
+    }
+
+    public CarbCalcPage metricUnits(){
+        WebElement metricLink = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'Metric Units')]")
+        ));
+        metricLink.click();
+        return this;
+    }
+
+    public CarbCalcPage ImperialHeightFtin(Integer feet, Integer inches){
+        WebElement feetInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("cheightfeet")));
+        feetInput.clear();
+        feetInput.sendKeys(String.valueOf(feet));
+
+        WebElement inchesInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("cheightinch")));
+        inchesInput.clear();
+        inchesInput.sendKeys(String.valueOf(inches));
+
+        return this;
+    }
+
+
+    public  CarbCalcPage ImperialWeightLbs(Double lbs){
+        WebElement weightInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("cpound")));
+        weightInput.clear();
+        weightInput.sendKeys(String.valueOf(lbs));
+        return this;
+    }
 
 
 }
