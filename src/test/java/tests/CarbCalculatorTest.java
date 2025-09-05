@@ -22,7 +22,7 @@ public class CarbCalculatorTest extends BaseTest {
                 .selectActivityLevel("Moderate: exercise 4-5 times/week")
                 .calculate();
 
-        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is visible after calculation");
+        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is not displayed after calculation");
 
     }
     @Test
@@ -37,7 +37,7 @@ public class CarbCalculatorTest extends BaseTest {
                 .selectActivityLevel("Sedentary: little or no exercise")
                 .calculate();
 
-        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is visible after calculation");
+        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is not displayed after calculation");
     }
 
     @Test
@@ -52,7 +52,7 @@ public class CarbCalculatorTest extends BaseTest {
                 .ImperialWeightLbs(154.3)
                 .selectActivityLevel("Moderate: exercise 4-5 times/week")
                 .calculate();
-        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is visible after calculation");
+        assertTrue(carbCalcPage.getResult(), "Expected result table with class 'cinfoT' is not displayed after calculation");
     }
 
 
@@ -65,7 +65,7 @@ public class CarbCalculatorTest extends BaseTest {
                 .calculate();
 
         assertFalse(carbCalcPage.getResult(),"Submitting blank form should surface validation or help messages and not result table" );
-        assertTrue(carbCalcPage.hasBlankErrorMessage(), "Expected error message is visible after blank submission");
+        assertTrue(carbCalcPage.hasBlankErrorMessage(), "Expected error messages are not visible after blank submission");
     }
 
 
